@@ -1,17 +1,12 @@
 // src/pages/home/homePage.tsx
-import { useState } from 'react';
-import { type OnboardingPhase, type OnboardingCluster, useOnboardingStore } from '../../store/onboardingStore';
+import { useOnboardingStore } from '../../store/onboardingStore';
 import { 
   OnboardingFlow, 
-  FilterBar, 
   OnboardingStats,
   TaskList
 } from '../../components/OnboardingFlow';
 
-export function Home() {
-  const [selectedPhase, setSelectedPhase] = useState<OnboardingPhase | undefined>(undefined);
-  const [selectedCluster, setSelectedCluster] = useState<OnboardingCluster | undefined>(undefined);
-  
+export function Home() { 
   // Get all steps
   const steps = useOnboardingStore((state) => state.steps);
 
@@ -45,12 +40,6 @@ export function Home() {
           status="completed"
         />
         
-        <FilterBar 
-          selectedPhase={selectedPhase}
-          setSelectedPhase={setSelectedPhase}
-          selectedCluster={selectedCluster}
-          setSelectedCluster={setSelectedCluster}
-        />
         
         <div className="bg-white shadow sm:rounded-lg mb-6">
           <div className="px-4 py-5 sm:p-6">
@@ -59,10 +48,7 @@ export function Home() {
               Visual representation of your onboarding journey. Drag to rearrange, connect nodes to show dependencies.
             </p>
             <div className="mt-4">
-              <OnboardingFlow 
-                selectedPhase={selectedPhase}
-                selectedCluster={selectedCluster}
-              />
+              <OnboardingFlow />
             </div>
           </div>
         </div>

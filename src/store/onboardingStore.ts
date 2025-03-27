@@ -24,6 +24,7 @@ export type OnboardingCluster =
 export type DocumentLink = {
   type: 'document';
   url: string;
+  readingTime: number;
 };
 
 export type CheckList = {
@@ -196,9 +197,25 @@ export const useOnboardingStore = create<OnboardingState>()(
         )
       })),
       
-      removeStep: (id) => set((state) => ({
-        steps: state.steps.filter((s) => s.id !== id)
-      })),
+      removeStep: (id) => set((state) => {
+        // Remove the step
+        const newSteps = state.steps.filter(step => step.id !== id);
+        
+        // Remove the corresponding node and any connected edges
+        const newNodes = state.flow.nodes.filter(node => node.id !== id);
+        const newEdges = state.flow.edges.filter(
+          edge => edge.source !== id && edge.target !== id
+        );
+
+        return {
+          steps: newSteps,
+          flow: {
+            ...state.flow,
+            nodes: newNodes,
+            edges: newEdges,
+          }
+        };
+      }),
       
       updateStepStatus: (id, status) => set((state) => ({
         steps: state.steps.map((step) => 

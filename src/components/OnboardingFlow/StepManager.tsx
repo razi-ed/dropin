@@ -35,10 +35,9 @@ export function StepManager() {
   const [editingStepId, setEditingStepId] = useState<string | null>(null);
   const [formData, setFormData] = useState<StepFormData>(defaultFormData);
   
-  const steps = useOnboardingStore((state) => state.steps);
+  const { steps, removeStep } = useOnboardingStore();
   const addStep = useOnboardingStore((state) => state.addStep);
   const updateStep = useOnboardingStore((state) => state.updateStep);
-  const removeStep = useOnboardingStore((state) => state.removeStep);
   const addNode = useOnboardingStore((state) => state.addNode);
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -156,10 +155,16 @@ export function StepManager() {
     setIsAddingStep(true);
   };
   
+  const handleDelete = (stepId: string) => {
+    if (window.confirm('Are you sure you want to delete this step?')) {
+      removeStep(stepId);
+    }
+  };
+  
   return (
     <div className="my-6">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-medium text-gray-900">Manage Onboarding Steps</h2>
+      <div className="flex flex-row-reverse items-center mb-4">
+        
         {!isAddingStep && (
           <button
             type="button"
@@ -410,7 +415,7 @@ export function StepManager() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => removeStep(step.id)}
+                        onClick={() => handleDelete(step.id)}
                         className="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-red-700 shadow-sm ring-1 ring-inset ring-red-300 hover:bg-red-50"
                       >
                         Delete

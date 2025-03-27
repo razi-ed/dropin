@@ -1,11 +1,9 @@
-import { useState } from 'react';
-import { type OnboardingPhase, type OnboardingCluster, useOnboardingStore } from '../../store/onboardingStore';
+import { useOnboardingStore } from '../../store/onboardingStore';
 import { 
   StepManager, 
-  OnboardingStats
 } from '../../components/OnboardingFlow';
 
-export function Edit() {
+export function EditSteps() {
   const { reset } = useOnboardingStore();
 
   const handleReset = () => {
@@ -19,17 +17,15 @@ export function Edit() {
       <header className="mb-8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Manage Onboarding Data
+            Manage Onboarding Steps
           </h1>
           <p className="mt-2 text-sm text-gray-700">
-            Add, edit, and manage your onboarding steps and export/import data.
+            Here you can add, edit and delete steps.
           </p>
         </div>
       </header>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <OnboardingStats />
-        
         <StepManager />
         
         <div className="my-6 bg-white shadow sm:rounded-lg">

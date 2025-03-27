@@ -1,1 +1,2 @@
-export { Edit } from './editPage'
+export { EditFlow } from './editFlow'
+export { EditSteps } from './editSteps'

@@ -1,39 +1,34 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ReactFlow, {
   Background,
-  type Connection,
   Controls,
+  type Edge,
   MiniMap,
   type NodeTypes,
-  Panel,
+  type OnConnect,
   ReactFlowProvider,
   useReactFlow,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
 import { OnboardingNode } from './OnboardingNode';
-import { useOnboardingStore, type OnboardingPhase, type OnboardingCluster } from '../../store/onboardingStore';
+import { type Step, useOnboardingStore } from '../../store/onboardingStore';
+import { TaskDrawer } from './TaskDrawer';
 
-// Register custom node types
+// Register the OnboardingNode component
 const nodeTypes: NodeTypes = {
   onboardingNode: OnboardingNode,
 };
 
-const defaultEdgeOptions = {
-  animated: true,
-  style: {
-    stroke: '#6366F1',
-    strokeWidth: 2,
-  },
-};
-
-interface OnboardingFlowProps {
-  selectedPhase?: OnboardingPhase;
-  selectedCluster?: OnboardingCluster;
+interface FlowChartProps {
+  isEditable?: boolean;
 }
 
-function FlowChart({ selectedPhase, selectedCluster }: OnboardingFlowProps) {
+function FlowChart({ isEditable = false }: FlowChartProps) {
   const { fitView } = useReactFlow();
+  const [selectedStep, setSelectedStep] = useState<Step | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  
   const { 
     flow,
     onNodesChange,
@@ -41,33 +36,42 @@ function FlowChart({ selectedPhase, selectedCluster }: OnboardingFlowProps) {
     addEdge,
   } = useOnboardingStore();
 
-  // Filter nodes based on selected phase and cluster
-  const { nodes, edges } = useMemo(() => {
-    if (!selectedPhase && !selectedCluster) {
-      return flow;
-    }
-
-    const filteredNodes = flow.nodes.filter(node => {
-      const { step } = node.data;
-      return (
-        (!selectedPhase || step.phase === selectedPhase) &&
-        (!selectedCluster || step.cluster === selectedCluster)
-      );
-    });
-
-    const nodeIds = new Set(filteredNodes.map(node => node.id));
-    const filteredEdges = flow.edges.filter(
-      edge => nodeIds.has(edge.source) && nodeIds.has(edge.target)
-    );
-
-    return { nodes: filteredNodes, edges: filteredEdges };
-  }, [flow, selectedPhase, selectedCluster]);
-
   // Handle connection events
   const onConnect = useCallback(
-    (params: Connection) => addEdge(params),
-    [addEdge]
+    (params: Edge) => {
+      if (isEditable) {
+        addEdge(params);
+      }
+    },
+    [addEdge, isEditable]
   );
+
+  // Handle drawer close
+  const handleCloseDrawer = useCallback(() => {
+    setIsDrawerOpen(false);
+    setTimeout(() => setSelectedStep(null), 300);
+  }, []);
+
+  // Add onClick handler to nodes
+  const nodes = flow.nodes.map(node => ({
+    ...node,
+    draggable: isEditable, // Allow dragging only in edit mode
+    connectable: isEditable, // Allow connections only in edit mode
+    data: {
+      ...node.data,
+      isEditable, // Pass editability to node component
+      onClick: (step: Step) => {
+        setSelectedStep(step);
+        setIsDrawerOpen(true);
+      }
+    }
+  }));
+
+  // Pass the edit state to ReactFlow
+  const edgesUpdatable = isEditable;
+  const nodesDraggable = isEditable;
+  const nodesConnectable = isEditable;
+  const elementsSelectable = isEditable;
 
   // Fit view whenever nodes change
   useEffect(() => {
@@ -80,39 +84,62 @@ function FlowChart({ selectedPhase, selectedCluster }: OnboardingFlowProps) {
   }, [nodes, fitView]);
 
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
-      nodeTypes={nodeTypes}
-      defaultEdgeOptions={defaultEdgeOptions}
-      fitView
-      fitViewOptions={{ padding: 0.2 }}
-    >
-      <Background color="#f8fafc" gap={12} />
-      <Controls />
-      <MiniMap zoomable pannable />
-      <Panel position="top-right">
-        <div className="bg-white rounded-md shadow-md p-3 text-sm">
-          <span className="font-medium">
-            {selectedPhase && `Phase: ${selectedPhase}`}
-            {selectedPhase && selectedCluster && ' | '}
-            {selectedCluster && `Cluster: ${selectedCluster}`}
-            {!selectedPhase && !selectedCluster && 'All Onboarding Items'}
-          </span>
-        </div>
-      </Panel>
-    </ReactFlow>
+    <>
+      <ReactFlow
+        nodes={nodes}
+        edges={flow.edges}
+        onNodesChange={isEditable ? onNodesChange : undefined}
+        onEdgesChange={isEditable ? onEdgesChange : undefined}
+        onConnect={onConnect as OnConnect}
+        nodeTypes={nodeTypes}
+        fitView
+        fitViewOptions={{ padding: 0.2 }}
+        nodesDraggable={nodesDraggable}
+        nodesConnectable={nodesConnectable}
+        edgesUpdatable={edgesUpdatable}
+        elementsSelectable={elementsSelectable}
+      >
+        <Background color="#f8fafc" gap={12} />
+        <Controls />
+        <MiniMap zoomable pannable />
+        
+        {/* Show edit mode indicator */}
+        {isEditable && (
+          <div 
+            style={{
+              position: 'absolute',
+              right: 10,
+              top: 10,
+              padding: '4px 8px',
+              background: 'rgba(0, 0, 0, 0.5)',
+              color: 'white',
+              borderRadius: '4px',
+              fontSize: '12px',
+            }}
+          >
+            Edit Mode
+          </div>
+        )}
+      </ReactFlow>
+
+      <TaskDrawer
+        step={selectedStep}
+        isOpen={isDrawerOpen}
+        onClose={handleCloseDrawer}
+      />
+    </>
   );
 }
 
-export function OnboardingFlow(props: OnboardingFlowProps) {
+interface OnboardingFlowProps {
+  isEditable?: boolean;
+}
+
+export function OnboardingFlow({ isEditable = false }: OnboardingFlowProps) {
   return (
     <div className="h-[600px] w-full">
       <ReactFlowProvider>
-        <FlowChart {...props} />
+        <FlowChart isEditable={isEditable} />
       </ReactFlowProvider>
     </div>
   );

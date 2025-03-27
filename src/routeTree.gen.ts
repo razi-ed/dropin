@@ -12,7 +12,8 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as OnboardingFlowImport } from './routes/onboarding-flow'
-import { Route as EditImport } from './routes/edit'
+import { Route as EditStepsImport } from './routes/edit-steps'
+import { Route as EditFlowImport } from './routes/edit-flow'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -23,9 +24,15 @@ const OnboardingFlowRoute = OnboardingFlowImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const EditRoute = EditImport.update({
-  id: '/edit',
-  path: '/edit',
+const EditStepsRoute = EditStepsImport.update({
+  id: '/edit-steps',
+  path: '/edit-steps',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const EditFlowRoute = EditFlowImport.update({
+  id: '/edit-flow',
+  path: '/edit-flow',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,11 +53,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/edit': {
-      id: '/edit'
-      path: '/edit'
-      fullPath: '/edit'
-      preLoaderRoute: typeof EditImport
+    '/edit-flow': {
+      id: '/edit-flow'
+      path: '/edit-flow'
+      fullPath: '/edit-flow'
+      preLoaderRoute: typeof EditFlowImport
+      parentRoute: typeof rootRoute
+    }
+    '/edit-steps': {
+      id: '/edit-steps'
+      path: '/edit-steps'
+      fullPath: '/edit-steps'
+      preLoaderRoute: typeof EditStepsImport
       parentRoute: typeof rootRoute
     }
     '/onboarding-flow': {
@@ -67,41 +81,46 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/edit': typeof EditRoute
+  '/edit-flow': typeof EditFlowRoute
+  '/edit-steps': typeof EditStepsRoute
   '/onboarding-flow': typeof OnboardingFlowRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/edit': typeof EditRoute
+  '/edit-flow': typeof EditFlowRoute
+  '/edit-steps': typeof EditStepsRoute
   '/onboarding-flow': typeof OnboardingFlowRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/edit': typeof EditRoute
+  '/edit-flow': typeof EditFlowRoute
+  '/edit-steps': typeof EditStepsRoute
   '/onboarding-flow': typeof OnboardingFlowRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/edit' | '/onboarding-flow'
+  fullPaths: '/' | '/edit-flow' | '/edit-steps' | '/onboarding-flow'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/edit' | '/onboarding-flow'
-  id: '__root__' | '/' | '/edit' | '/onboarding-flow'
+  to: '/' | '/edit-flow' | '/edit-steps' | '/onboarding-flow'
+  id: '__root__' | '/' | '/edit-flow' | '/edit-steps' | '/onboarding-flow'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  EditRoute: typeof EditRoute
+  EditFlowRoute: typeof EditFlowRoute
+  EditStepsRoute: typeof EditStepsRoute
   OnboardingFlowRoute: typeof OnboardingFlowRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  EditRoute: EditRoute,
+  EditFlowRoute: EditFlowRoute,
+  EditStepsRoute: EditStepsRoute,
   OnboardingFlowRoute: OnboardingFlowRoute,
 }
 
@@ -116,15 +135,19 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/edit",
+        "/edit-flow",
+        "/edit-steps",
         "/onboarding-flow"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/edit": {
-      "filePath": "edit.tsx"
+    "/edit-flow": {
+      "filePath": "edit-flow.tsx"
+    },
+    "/edit-steps": {
+      "filePath": "edit-steps.tsx"
     },
     "/onboarding-flow": {
       "filePath": "onboarding-flow.tsx"

@@ -11,7 +11,8 @@ export const sampleSteps: Step[] = [
     cluster: 'Development environment',
     content: {
       type: 'document',
-      url: 'https://confluence.example.com/page/dev-environment-setup'
+      url: 'https://confluence.example.com/page/dev-environment-setup',
+      readingTime: 20
     },
     status: 'inprogress'
   },
@@ -39,7 +40,8 @@ export const sampleSteps: Step[] = [
     cluster: 'Company Architecture',
     content: {
       type: 'document',
-      url: 'https://confluence.example.com/page/architecture-overview'
+      url: 'https://confluence.example.com/page/architecture-overview',
+      readingTime: 15
     },
     status: 'inprogress'
   },
@@ -51,7 +53,8 @@ export const sampleSteps: Step[] = [
     cluster: 'CI/CD workflow',
     content: {
       type: 'document',
-      url: 'https://confluence.example.com/page/cicd-setup'
+      url: 'https://confluence.example.com/page/cicd-setup',
+      readingTime: 10
     },
     status: 'todo'
   },
@@ -79,7 +82,8 @@ export const sampleSteps: Step[] = [
     cluster: 'Team Processes',
     content: {
       type: 'document',
-      url: 'https://confluence.example.com/page/code-review-guidelines'
+      url: 'https://confluence.example.com/page/code-review-guidelines',
+      readingTime: 10
     },
     status: 'todo'
   },
@@ -107,7 +111,8 @@ export const sampleSteps: Step[] = [
     cluster: 'CI/CD workflow',
     content: {
       type: 'document',
-      url: 'https://confluence.example.com/page/deployment-process'
+      url: 'https://confluence.example.com/page/deployment-process',
+      readingTime: 10
     },
     status: 'todo'
   }

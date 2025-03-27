@@ -1,4 +1,3 @@
-// src/components/OnboardingFlow/TaskDrawer.tsx
 import { useEffect } from 'react';
 import { type Step, useOnboardingStore } from '../../store/onboardingStore';
 

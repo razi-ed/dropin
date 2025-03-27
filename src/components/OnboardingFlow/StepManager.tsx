@@ -80,6 +80,7 @@ export function StepManager() {
       content = {
         type: 'document',
         url: formData.documentUrl,
+        readingTime: 10
       };
     } else {
       content = {
@@ -313,7 +314,7 @@ export function StepManager() {
                         Checklist Items
                       </label>
                       <div className="mt-2 space-y-3">
-                        {formData.checklist.map((item, index) => (
+                        {formData.checklist.map((item) => (
                           <div key={item.id} className="flex items-center gap-2">
                             <input
                               type="text"

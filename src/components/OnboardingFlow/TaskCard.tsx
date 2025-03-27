@@ -1,4 +1,3 @@
-// src/components/OnboardingFlow/TaskCard.tsx
 import { type Step } from '../../store/onboardingStore';
 
 interface TaskCardProps {

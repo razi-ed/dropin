@@ -1,4 +1,3 @@
-// src/components/OnboardingFlow/TaskList.tsx
 import { useState, useMemo } from 'react';
 import { type Step } from '../../store/onboardingStore';
 import { TaskCard } from './TaskCard';

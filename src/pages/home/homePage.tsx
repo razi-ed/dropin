@@ -1,4 +1,3 @@
-// src/pages/home/homePage.tsx
 import { useOnboardingStore } from '../../store/onboardingStore';
 import { 
   OnboardingFlow, 

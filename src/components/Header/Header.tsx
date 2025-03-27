@@ -13,7 +13,6 @@ export function Header() {
   const handleExport = () => {
     const stateJSON = exportState();
     
-    // Create a blob and downloadable link
     const blob = new Blob([stateJSON], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     

@@ -1,4 +1,3 @@
-// src/components/OnboardingFlow/InProgressCards.tsx
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useOnboardingStore, type Step } from '../../store/onboardingStore';
 

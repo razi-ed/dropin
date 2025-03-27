@@ -2,8 +2,6 @@ import { useState } from 'react';
 import type { OnboardingPhase, OnboardingCluster } from '../../store/onboardingStore';
 import { 
   OnboardingFlow, 
-  ImportExport, 
-  StepManager, 
   FilterBar, 
   OnboardingStats 
 } from '../../components/OnboardingFlow';
@@ -49,10 +47,6 @@ export function Home() {
             </div>
           </div>
         </div>
-        
-        <StepManager />
-        
-        <ImportExport />
       </div>
     </div>
   );

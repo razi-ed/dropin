@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { type OnboardingPhase, type OnboardingCluster, useOnboardingStore } from '../../store/onboardingStore';
 import { 
   StepManager, 
-  ImportExport,
   OnboardingStats
 } from '../../components/OnboardingFlow';
 
@@ -32,8 +31,6 @@ export function Edit() {
         <OnboardingStats />
         
         <StepManager />
-        
-        <ImportExport />
         
         <div className="my-6 bg-white shadow sm:rounded-lg">
           <div className="px-4 py-5 sm:p-6">

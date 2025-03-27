@@ -13,7 +13,7 @@ export const sampleSteps: Step[] = [
       type: 'document',
       url: 'https://confluence.example.com/page/dev-environment-setup'
     },
-    status: 'todo'
+    status: 'inprogress'
   },
   {
     id: 'step2',
@@ -29,7 +29,7 @@ export const sampleSteps: Step[] = [
         { id: 'item3', text: 'Accept invitation to the organization', checked: false }
       ]
     },
-    status: 'todo'
+    status: 'completed'
   },
   {
     id: 'step3',
@@ -41,7 +41,7 @@ export const sampleSteps: Step[] = [
       type: 'document',
       url: 'https://confluence.example.com/page/architecture-overview'
     },
-    status: 'todo'
+    status: 'inprogress'
   },
   {
     id: 'step4',
@@ -69,7 +69,7 @@ export const sampleSteps: Step[] = [
         { id: 'item3', text: 'Prepare your first update', checked: false }
       ]
     },
-    status: 'todo'
+    status: 'completed'
   },
   {
     id: 'step6',

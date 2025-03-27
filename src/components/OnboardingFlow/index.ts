@@ -4,3 +4,6 @@ export { ImportExport } from './ImportExport';
 export { StepManager } from './StepManager';
 export { FilterBar } from './FilterBar';
 export { OnboardingStats } from './Stats'; 
+export { TaskList } from './TaskList';
+export { TaskCard } from './TaskCard';
+export { TaskDrawer } from './TaskDrawer';

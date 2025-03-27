@@ -1,14 +1,19 @@
+// src/pages/home/homePage.tsx
 import { useState } from 'react';
-import type { OnboardingPhase, OnboardingCluster } from '../../store/onboardingStore';
+import { type OnboardingPhase, type OnboardingCluster, useOnboardingStore } from '../../store/onboardingStore';
 import { 
   OnboardingFlow, 
   FilterBar, 
-  OnboardingStats 
+  OnboardingStats,
+  TaskList
 } from '../../components/OnboardingFlow';
 
 export function Home() {
   const [selectedPhase, setSelectedPhase] = useState<OnboardingPhase | undefined>(undefined);
   const [selectedCluster, setSelectedCluster] = useState<OnboardingCluster | undefined>(undefined);
+  
+  // Get all steps
+  const steps = useOnboardingStore((state) => state.steps);
 
   return (
     <div>
@@ -25,6 +30,20 @@ export function Home() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <OnboardingStats />
+        
+        {/* In Progress Tasks */}
+        <TaskList 
+          title="In Progress"
+          steps={steps}
+          status="inprogress"
+        />
+        
+        {/* Completed Tasks */}
+        <TaskList 
+          title="Completed"
+          steps={steps}
+          status="completed"
+        />
         
         <FilterBar 
           selectedPhase={selectedPhase}
